@@ -1,0 +1,66 @@
+import tensorflow as tf
+from tensorflow.keras import layers, models
+import matplotlib.pyplot as plt
+
+# Load dataset from folders
+img_size = (128, 128)
+batch_size = 32
+
+# Data augmentation
+data_augmentation = tf.keras.Sequential([
+    layers.RandomFlip("horizontal"),
+    layers.RandomRotation(0.1),
+    layers.RandomZoom(0.1),
+])
+
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    "c:\\Users\\DELL\\OneDrive\\Desktop\\SELF STUDY\\main quest\\git\\face detection\\data",
+    labels="inferred",
+    label_mode="binary",
+    image_size=img_size,
+    batch_size=batch_size,
+    validation_split=0.2,
+    subset="training",
+    seed=123
+)
+val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    "c:\\Users\\DELL\\OneDrive\\Desktop\\SELF STUDY\\main quest\\git\\face detection\\data",
+    labels="inferred",
+    label_mode="binary",
+    image_size=img_size,
+    batch_size=batch_size,
+    validation_split=0.2,
+    subset="validation",
+    seed=123
+)
+
+# Prefetch for performance
+AUTOTUNE = tf.data.AUTOTUNE
+train_ds = train_ds.map(lambda x, y: (data_augmentation(x, training=True), y)).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.prefetch(buffer_size=AUTOTUNE)
+
+# Build enhanced model
+model = models.Sequential([
+    layers.Rescaling(1./255, input_shape=img_size + (3,)),
+    layers.Conv2D(32, (3,3), activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(64, (3,3), activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(128, (3,3), activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(1, activation='sigmoid')
+])
+
+# Compile + train with EarlyStopping
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
+history = model.fit(train_ds, epochs=20, validation_data=val_ds, callbacks=[early_stop])
+
+# Plot training accuracy
+plt.plot(history.history['accuracy'], label='train acc')
+plt.plot(history.history['val_accuracy'], label='val acc')
+plt.legend()
+plt.show()
