@@ -53,10 +53,6 @@ data/
 - Dense layer with dropout
 - Output layer with sigmoid activation
 
-## Example Output
-
-![alt text](<Screenshot 2025-10-05 173814.png>)
-
 ## License
 
 This project is for educational purposes.
