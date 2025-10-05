@@ -55,7 +55,7 @@ data/
 
 ## Example Output
 
-*(Add your output photo here after uploading it to GitHub)*
+![alt text](<Screenshot 2025-10-05 173814.png>)
 
 ## License
 
