@@ -56,4 +56,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 ## OUTPUT 
+
+The plot above shows the training and validation accuracy over epochs.  
+A steady increase in training accuracy and high validation accuracy indicate that the model is learning to distinguish between masked and unmasked faces effectively.  
+Slight differences between the two curves are normal and suggest the model is generalizing well to unseen data.
+
 <img width="1045" height="893" alt="image" src="https://github.com/user-attachments/assets/596bb1ae-69be-4567-8170-15ad9476136c" />
