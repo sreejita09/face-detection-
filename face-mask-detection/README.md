@@ -53,3 +53,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+## OUTPUT 
+<img width="1045" height="893" alt="image" src="https://github.com/user-attachments/assets/596bb1ae-69be-4567-8170-15ad9476136c" />
